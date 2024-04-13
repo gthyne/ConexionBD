@@ -1,50 +1,76 @@
 import os
 import daoConnection as dao
-import clases as c
+from features.city import city_service
+from features.job import job_service
+from features.employee import employee_service
 
 os.system('cls')
 conex = dao.Connection("localhost", "root", "", "registrodb")
 conex.connect()
 
-def insertarCiudad():
-    nombre = input("nombre ciudad ")
-    ciudad = c.City(nombre, 1)
-    daoCity = dao.DaoCity(conex)
-    daoCity.insert(ciudad)
-
-def mostrar():
-    daoCity = dao.DaoCity(conex)
-    cities = daoCity.get_all()
-    for city in cities:
-        print (city)
-    #insertar
-    
-
-def menu():
-    print("1,insertar ciudad")
-    print("2,editar ciudad")
-    print("3,mostrar ciudad")
-    print("4,Eliminar ciudad")
-    print("5,buscar  ciudad")
-    print("6,salir")
-
-
 def main():
     op = 0
-    while(op !=6):
-        menu()
-        opcion = int(input("dime tu opcion ")) 
-        if (opcion == 1):
-            insertarCiudad()
-            os.system("pause")
-        elif(opcion==3):
-            mostrar()
-            os.system("pause")
+    while op != 6:
+        main_menu()
+        op = int(input("Ingrese su opcion: "))
+        if op == 1:
+            city_operations()
+        elif op == 2:
+            job_operations()
+        elif op == 3:
+            employee_operations()
+        elif op == 6:
+            print("Hasta luego")
+            break
+        else:
+            print("Opcion no valida. Intentelo de nuevo.")
 
-main()
+def main_menu():
+    print("--------- Menu Principal ---------")
+    print("1. Ciudad")
+    print("2. Trabajo")
+    print("3. Empleado")
+    print("6. Salir")
+    print("-----------------------------------")
 
+def city_operations():
+    print("--------- Operaciones de Ciudad ---------")
+    print("1. Insertar ciudad")
+    print("2. Mostrar ciudad")
+    print("-----------------------------------------")
+    option = int(input("Ingrese su opcion: "))
 
+    if option == 1:
+        city_service.insertarCiudad(conex)
+    elif option == 2:
+        city_service.mostrar(conex)
 
+def job_operations():
+    print("--------- Operaciones de Trabajo ---------")
+    print("1. Insertar trabajo")
+    print("2. Mostrar trabajo")
+    print("-------------------------------------------")
+    option = int(input("Ingrese su opcion: "))
+
+    if option == 1:
+        job_service.insertarTrabajo(conex)
+    elif option == 2:
+        job_service.mostrar(conex)
+
+def employee_operations():
+    print("--------- Operaciones de Empleado ---------")
+    print("1. Insertar empleado")
+    print("2. Mostrar empleado")
+    print("--------------------------------------------")
+    option = int(input("Ingrese su opcion: "))
+    
+    if option == 1:
+        employee_service.insertarEmpleado(conex)
+    elif option == 2:
+        employee_service.mostrar(conex)
+
+if __name__ == "__main__":
+    main()
 
 """
 
@@ -74,3 +100,5 @@ cities = daoCity.get_all()
 for city in cities:
     print(city)
 """
+
+
